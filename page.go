@@ -247,7 +247,12 @@ Parse:
 								s := bf.dst.RawString()
 								if bf.lo != text {
 									b := []byte(s)
-									b[len(b)-1] += text[len(text)-1] - bf.lo[len(bf.lo)-1]
+
+									// Split the expression to appease 32-bit go compiler.
+									lastText := text[len(text)-1]
+									lastBfLo := bf.lo[len(bf.lo)-1]
+									b[len(b)-1] += lastText - lastBfLo
+
 									s = string(b)
 								}
 								r = append(r, []rune(utf16Decode(s))...)
